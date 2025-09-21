@@ -40,7 +40,7 @@ function deposit(value, currency) {
 function withdraw(value, currency) {
     let computedWithdrawal = value * exchangeRates[currency];
     account.balance -= computedWithdrawal;
-    console.log(`{currency}` + ' ' + `{computedWithdrawal.toFixed(2)} has been withdrawn from your account!`);
+    console.log(`${currency} ${computedWithdrawal.toFixed(2)} has been withdrawn from your account!`);
     console.log(`Current Account Balance: ${account.balance.toFixed(2)}\n`);
 }
 
@@ -137,8 +137,24 @@ function recordExchangeRates() {
 }
 
 function showInterest() {
-    console.log("Show Interest...");
-    // logic here
+    const days = Number(prompt("Enter number of days: "));
+    const annualRate = Number(prompt("Enter Interest Rate per year: "))/100;
+    const currency = prompt("Enter currency: ").toUpperCase();
+    let balance = account.balance; // internal balance in PHP
+
+    console.log("Day   |     Interest    |     Balance     |");
+
+    for (let day = 1; day <= days; day++) {
+        let dailyInterest = balance * (annualRate / 365); // interest in PHP
+        balance += dailyInterest; // update internal balance
+        let displayBalance = balance * exchangeRates[currency]; // convert to chosen currency
+
+        let dayStr = String(day).padEnd(5, ' ');
+        let interestStr = dailyInterest.toFixed(2).padStart(15, ' ');
+        let balanceStr = displayBalance.toFixed(2).padStart(15, ' ');
+
+        console.log(`${dayStr} | ${interestStr} | ${balanceStr} |`);
+    }
 }
 
 // --- Main Flow ---

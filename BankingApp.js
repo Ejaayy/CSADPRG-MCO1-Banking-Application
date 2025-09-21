@@ -33,18 +33,83 @@ function registerAccount(name) {
 function deposit(value, currency) {
     let computedDeposit = value * exchangeRates[currency];
     account.balance += computedDeposit;
-    console.log(`{currency} + ' ' + ${computedDeposit.toFixed(2)} has been deposited to your account!`);
+    console.log(`${currency}`+ ' ' + `${computedDeposit.toFixed(2)} has been deposited to your account!`);
     console.log(`Current Account Balance: ${account.balance.toFixed(2)}\n`);
 }
 
 function withdraw(value, currency) {
     let computedWithdrawal = value * exchangeRates[currency];
     account.balance -= computedWithdrawal;
-    console.log(`{currency} + ' ' + {computedWithdrawal.toFixed(2)} has been withdrawn from your account!`);
+    console.log(`{currency}` + ' ' + `{computedWithdrawal.toFixed(2)} has been withdrawn from your account!`);
     console.log(`Current Account Balance: ${account.balance.toFixed(2)}\n`);
 }
 
+
+function currencyExchange() {
+    console.log('Foreign Currency Exchange\n');
+
+    console.log('Source Currency Options:');
+    console.log('[1] Philippine Peso (PHP)');
+    console.log('[2] United States Dollar (USD)');
+    console.log('[3] Japanese Yen (JPY)');
+    console.log('[4] British Pound Sterling (GBP)');
+    console.log('[5] Euro (EUR)');
+    console.log('[6] Chinese Yuan Renminni (CNY)\n');
+
+    const prompt = require('prompt-sync')();
+    let sourceChoice = Number(prompt('Source Currency: '));
+
+    let sourceCurrency;
+    switch(sourceChoice) {
+        case 1: sourceCurrency = 'PHP'; break;
+        case 2: sourceCurrency = 'USD'; break;
+        case 3: sourceCurrency = 'JPY'; break;
+        case 4: sourceCurrency = 'GBP'; break;
+        case 5: sourceCurrency = 'EUR'; break;
+        case 6: sourceCurrency = 'CNY'; break;
+        default:
+            console.log("Invalid source currency!");
+            return;
+    }
+
+    let amount = Number(prompt('Amount: '));
+    if(isNaN(amount) || amount <= 0) { //checks if its a number and more than 0
+        console.log("Invalid amount!");
+        return;
+    }
+
+    console.log('\nTarget Currency Options:');
+    console.log('[1] Philippine Peso (PHP)');
+    console.log('[2] United States Dollar (USD)');
+    console.log('[3] Japanese Yen (JPY)');
+    console.log('[4] British Pound Sterling (GBP)');
+    console.log('[5] Euro (EUR)');
+    console.log('[6] Chinese Yuan Renminni (CNY)\n');
+
+    let targetChoice = Number(prompt('Target Currency: '));
+
+    let targetCurrency;
+    switch(targetChoice) {
+        case 1: targetCurrency = 'PHP'; break;
+        case 2: targetCurrency = 'USD'; break;
+        case 3: targetCurrency = 'JPY'; break;
+        case 4: targetCurrency = 'GBP'; break;
+        case 5: targetCurrency = 'EUR'; break;
+        case 6: targetCurrency = 'CNY'; break;
+        default:
+            console.log("Invalid target currency!");
+            return;
+    }
+
+    // Conversion: first convert to PHP, then to target currency
+    let amountInPHP = amount * exchangeRates[sourceCurrency];
+    let exchangedAmount = amountInPHP / exchangeRates[targetCurrency];
+
+    console.log(`\n${amount.toFixed(2)} ${sourceCurrency} = ${exchangedAmount.toFixed(2)} ${targetCurrency}\n`);
+}
+
 function recordExchangeRates() {
+    console.log('Record Exchange Rate')
     console.log('[1] Philippine Peso (PHP)');
     console.log('[2] United States Dollar (USD)');
     console.log('[3] Japanese Yen (JPY)');
@@ -69,11 +134,6 @@ function recordExchangeRates() {
     }
 
     console.log(`Current exchange rate for ${currencyKey}: ${exchangeRates[currencyKey].toFixed(2)} PHP\n`);
-}
-
-function currencyExchange() {
-    console.log("Currency Exchange...");
-    // logic here
 }
 
 function showInterest() {
@@ -119,7 +179,9 @@ function mainMenu() {
 
             case 3:
                 do {
-                    withdraw();
+                    let withdrawalAmount = Number(prompt('Enter amount to withdraw: '));
+                    let currency = prompt('Enter currency [PHP, USD, JPY, GBP, EUR, CNY]: ').toUpperCase();
+                    withdraw(withdrawalAmount, currency);
                 } while (optionMenu());
                 break;
 

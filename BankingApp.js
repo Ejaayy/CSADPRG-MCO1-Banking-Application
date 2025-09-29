@@ -1,3 +1,10 @@
+/********************
+Last names: Paingan
+Language: Javascript
+Paradigm(s): Object-Oriented and Procedural Programming
+********************/
+
+//Library for easier user input
 const prompt = require('prompt-sync')();
 
 // --- Global Data ---
